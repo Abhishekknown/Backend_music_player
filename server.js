@@ -3,13 +3,13 @@ dotenv.config(); //Must Be before any use of proccess env
 
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors';
-app.use(cors()); // Allow all origins (dev-friendly)
+import cors from 'cors';// Allow all origins (dev-friendly)
 
 import songRoute from './routes/songs.js';
 
 
 const app = express();
+app.use(cors()); 
 
 const PORT = process.env.PORT || 5000;
 
