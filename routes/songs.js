@@ -55,7 +55,7 @@ router.get('/search/by-name', async(req,res)=>{
 
 // Update a song (UPDATE)
 
-router.put('/:id', async (req, res)=>{
+router.put('/_id', async (req, res)=>{
     try {
         const Updated = await Song.findByIdAndUpdate(req.params.id ,req.body, {new: true});
 
