@@ -55,7 +55,7 @@ router.get('/search/by-name', async(req,res)=>{
 
 // Update a song (UPDATE)
 
-router.put('/_id', async (req, res)=>{
+router.put('/:id', async (req, res)=>{
     try {
         const Updated = await Song.findByIdAndUpdate(req.params.id ,req.body, {new: true});
 
@@ -70,7 +70,7 @@ router.put('/_id', async (req, res)=>{
 })
 
 // Delete a song
-router.delete('/_id', async(req, res)=>{
+router.delete('/:id', async(req, res)=>{
     try {
         const deleted = await Song.findByIdAndDelete(req.params.id);
         
