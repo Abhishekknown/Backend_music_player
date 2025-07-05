@@ -1,20 +1,13 @@
-// Song will have 
-// Name ,type, cover , link -- link is required 
+// models/music.js
+import mongoose from 'mongoose';
 
-import mongoose from "mongoose";
+const songSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  type: String,
+  cover: String,
+  link: String,
+});
 
-
-// Setup the string type 
-export const songSchema = {
-    name:{type: String, required:true},
-    type:{type:String},
-    cover:{type:String},
-    link:{type:String}
-}
-
-// take constant and export the too the mongooes model
-const Song = mongoose.model('songs', songSchema);
-
+const Song = mongoose.model('Song', songSchema);
 
 export default Song;
-

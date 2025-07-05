@@ -1,36 +1,30 @@
-import dotenv from 'dotenv';
-dotenv.config(); //Must Be before any use of proccess env
-
+// server.js
 import express from 'express';
 import mongoose from 'mongoose';
-import cors from 'cors';// Allow all origins (dev-friendly)
+import dotenv from 'dotenv';
+import cors from 'cors';
 
 import songRoute from './routes/songs.js';
-import playlistRoute from './routes/playlists.js'; 
+import playlistRoute from './routes/playlists.js'; // ✅ Correct route
 
-
+dotenv.config();
 
 const app = express();
-app.use(cors()); 
+app.use(cors());
+app.use(express.json());
+
+// API routes
+app.use('/api/songs', songRoute);
+app.use('/api/playlist', playlistRoute); // ✅ Mount point for playlist routes
 
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(express.json()); //Parse JSON Bodies
-
-// Routes
-app.use('/api/songs', songRoute);
-app.use('/api/playlist', playlistRoute)
-
-// MongoDB Connections
-
-mongoose.connect(process.env.MONGO_URI).then(()=>{
-    console.log('Connected to MongoDB');
-
-    // Start Server only after DB connection
-    app.listen(PORT ,()=>{
-        console.log(`🚀 Server running on http://localhost:${PORT}`)
-    })
-}).catch((err)=>{
-    console.error(`❌ MongoDB connection failed:`, err.message)
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('✅ Connected to MongoDB');
+    app.listen(PORT, () =>
+      console.log(`🚀 Server running on http://localhost:${PORT}`)
+    );
+  })
+  .catch((err) => console.error('❌ MongoDB connection failed:', err.message));

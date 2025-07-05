@@ -1,38 +1,51 @@
+// routes/playlists.js
 import express from 'express';
-// Exporting the model playlist 
 import Playlist from '../models/playlist.js';
-import Song from '../models/music.js';
+import Song from '../models/music.js'; // ✅ Necessary for populate to work
 
 const router = express.Router();
 
-// Write the functions now 
+// GET all playlists with populated song details
+router.get('/', async (req, res) => {
+  try {
+    const playlists = await Playlist.find().populate('songs');
+    res.json({ playlists });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-// Fetch all songs from the playlist with its name 
-router.get('/',async(req,res)=>{
-    try {
-        const playlists = await Playlist.find().populate('songs');
-        res.json({playlists});
-    } catch (error) {
-        res.status(500).json({error:error.message});
+// CREATE a new playlist
+router.post('/create', async (req, res) => {
+  try {
+    const { name, songs } = req.body;
+    const playlist = new Playlist({ name, songs });
+    await playlist.save();
+    res.status(201).json({ message: 'Playlist created', playlist });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ADD song to playlist
+router.put('/:playlistId/add', async (req, res) => {
+  try {
+    const { songId } = req.body;
+
+    const playlist = await Playlist.findByIdAndUpdate(
+      req.params.playlistId,
+      { $addToSet: { songs: songId } },
+      { new: true }
+    ).populate('songs');
+
+    if (!playlist) {
+      return res.status(404).json({ message: 'Playlist not found' });
     }
-})
 
-
-// Create a playlist 
-router.post('/create', async(req, res)=>{
-    try {
-        const { name, songs } = req.body;
-        const playlist = new Playlist({
-            name,
-            songs
-        });
-
-        await playlist.save();
-
-        res.status(201).json({message:'Playlist Created', playlist});
-    } catch (error) {
-        res.status(500).json({message:error.message});
-    }
-})
+    res.json({ message: 'Song added to playlist', playlist });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;
