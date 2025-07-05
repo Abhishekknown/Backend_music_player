@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';// Allow all origins (dev-friendly)
 
 import songRoute from './routes/songs.js';
-import playlistRoute from './routes/playlist.js'; 
+import playlistRoute from './routes/playlists.js'; 
 
 
 
