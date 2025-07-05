@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';// Allow all origins (dev-friendly)
 
 import songRoute from './routes/songs.js';
+import playlistRoute from './models/playlist.js';
 
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json()); //Parse JSON Bodies
 
 // Routes
 app.use('/api/songs', songRoute);
+app.use('/api/playlist', playlistRoute)
 
 // MongoDB Connections
 

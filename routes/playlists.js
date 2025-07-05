@@ -21,11 +21,11 @@ router.get('/',async(req,res)=>{
 // Create a playlist 
 router.post('/create', async(req, res)=>{
     try {
-        const { name, songs} = req.body;
+        const { name, songs } = req.body;
         const playlist = new Playlist({
-            name, 
-            songs:songsIds
-        })
+            name,
+            songs
+        });
 
         await playlist.save();
 
